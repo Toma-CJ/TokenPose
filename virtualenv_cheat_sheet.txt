@@ -1,0 +1,7 @@
+Use sudo apt install outside of env
+pip install inside
+
+source venv/bin/activate
+
+deactivate
+
