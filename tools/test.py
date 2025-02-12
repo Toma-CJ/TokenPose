@@ -90,7 +90,7 @@ def main():
         logger.info('=> loading model from {}'.format(cfg.TEST.MODEL_FILE))
 
         # for unseen test
-        pretrained_state_dict = torch.load(cfg.TEST.MODEL_FILE)
+        pretrained_state_dict = torch.load(cfg.TEST.MODEL_FILE, weights_only=False) # for debug, added weights_only=False
         existing_state_dict = {}
         for name, m in pretrained_state_dict.items():
             if True:

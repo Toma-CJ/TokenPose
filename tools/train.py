@@ -164,7 +164,7 @@ def main():
 
     if cfg.AUTO_RESUME and os.path.exists(checkpoint_file):
         logger.info("=> loading checkpoint '{}'".format(checkpoint_file))
-        checkpoint = torch.load(checkpoint_file)
+        checkpoint = torch.load(checkpoint_file, weights_only=False) # for debug, added weights_only=False
         begin_epoch = checkpoint['epoch']
         best_perf = checkpoint['perf']
         last_epoch = checkpoint['epoch']
@@ -177,7 +177,7 @@ def main():
     lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(
         optimizer, cfg.TRAIN.LR_STEP, cfg.TRAIN.LR_FACTOR,
         last_epoch=last_epoch
-    ) if cfg.TRAIN.LR_SCHEDULER is 'MultiStepLR' else torch.optim.lr_scheduler.CosineAnnealingLR(
+    ) if cfg.TRAIN.LR_SCHEDULER == 'MultiStepLR' else torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer, cfg.TRAIN.END_EPOCH, eta_min=cfg.TRAIN.LR_END, last_epoch=last_epoch)
 
 

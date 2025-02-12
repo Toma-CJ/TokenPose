@@ -108,6 +108,9 @@ class COCODataset(JointsDataset):
         if is_train and cfg.DATASET.SELECT_DATA:
             self.db = self.select_data(self.db)
 
+        if self.is_train and len(self.db) > cfg.DATASET.NUM_IMAGES: # for debug, remove full line
+            self.db = self.db[:cfg.DATASET.NUM_IMAGES] # for debug, remove full line
+
         logger.info('=> load {} samples'.format(len(self.db)))
 
     def _get_ann_file_keypoint(self):
@@ -182,8 +185,8 @@ class COCODataset(JointsDataset):
             if max(obj['keypoints']) == 0:
                 continue
 
-            joints_3d = np.zeros((self.num_joints, 3), dtype=np.float)
-            joints_3d_vis = np.zeros((self.num_joints, 3), dtype=np.float)
+            joints_3d = np.zeros((self.num_joints, 3), dtype=np.float64)
+            joints_3d_vis = np.zeros((self.num_joints, 3), dtype=np.float64)
             for ipt in range(self.num_joints):
                 joints_3d[ipt, 0] = obj['keypoints'][ipt * 3 + 0]
                 joints_3d[ipt, 1] = obj['keypoints'][ipt * 3 + 1]
@@ -271,9 +274,9 @@ class COCODataset(JointsDataset):
             num_boxes = num_boxes + 1
 
             center, scale = self._box2cs(box)
-            joints_3d = np.zeros((self.num_joints, 3), dtype=np.float)
+            joints_3d = np.zeros((self.num_joints, 3), dtype=np.float64)
             joints_3d_vis = np.ones(
-                (self.num_joints, 3), dtype=np.float)
+                (self.num_joints, 3), dtype=np.float64)
             kpt_db.append({
                 'image': img_name,
                 'center': center,
@@ -406,7 +409,7 @@ class COCODataset(JointsDataset):
             _key_points = np.array([img_kpts[k]['keypoints']
                                     for k in range(len(img_kpts))])
             key_points = np.zeros(
-                (_key_points.shape[0], self.num_joints * 3), dtype=np.float
+                (_key_points.shape[0], self.num_joints * 3), dtype=np.float64
             )
 
             for ipt in range(self.num_joints):
