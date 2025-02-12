@@ -1,0 +1,6 @@
+fuck cuda lol
+
+Edited setup_linux.py in nms to use pedros gpu
+
+Downloaded model from:
+https://drive.google.com/drive/folders/1E6j6W7RqGhW1o7UHgiQ9X4g8fVJRU9TX
